@@ -177,35 +177,51 @@
             "name": "Canadian Army Sergeant Major",
             "abbreviation": "CASM/DEV",
             "role_keys": [
-                "enlisted"
+                "arc"
             ]
         },
-        "ROBLOX_ID": {
-            "name": "NAME",
-            "abbreviation": "OR-2",
+        "916216090": {
+            "name": "Director-General of the Operational Staff",
+            "abbreviation": "DGOS",
             "role_keys": [
-                "enlisted"
+                "arc"
             ]
         },
-        "ROBLOX_ID": {
-            "name": "NAME",
-            "abbreviation": "OR-2",
+        "915310097": {
+            "name": "Chief of the Joint Staff",
+            "abbreviation": "CJS",
             "role_keys": [
-                "enlisted"
+                "arc"
             ]
         },
-        "ROBLOX_ID": {
-            "name": "NAME",
-            "abbreviation": "OR-2",
+        "916466053": {
+            "name": "Vice Chief of the Defence Staf",
+            "abbreviation": "VCDS",
             "role_keys": [
-                "enlisted"
+                "arc"
             ]
         },
-        "ROBLOX_ID": {
-            "name": "NAME",
-            "abbreviation": "OR-2",
+        "915798064": {
+            "name": "Chief of the Defence Staff",
+            "abbreviation": "CDS",
             "role_keys": [
-                "enlisted"
+                "arc"
+            ]
+        },
+        "915780054": {
+            "name": "Minister of National Defence",
+            "abbreviation": "2IC/MND",
+            "role_keys": [
+                "arc",
+                "c_gov"
+            ]
+        },
+        "916820070": {
+            "name": "Commander-in-Chief of Canada",
+            "abbreviation": "1IC/CIC",
+            "role_keys": [
+                "arc",
+                "c_gov"
             ]
         }
     }
