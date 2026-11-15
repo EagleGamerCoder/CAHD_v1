@@ -98,21 +98,56 @@ class DiscordBot(commands.Bot):
         await self._sync_application_commands()
 
     async def _sync_application_commands(self) -> None:
-        """Sync commands to the developer guild, or globally when not configured."""
+        """Synchronise application commands to the developer guild or globally."""
+
+        logger.info(
+            "Application ID: %s",
+            self.application_id,
+        )
+
         if self.settings.guild_id is not None:
             guild = discord.Object(id=self.settings.guild_id)
+
+            logger.info(
+                "Synchronising commands to guild ID: %s",
+                guild.id,
+            )
+
             self.tree.copy_global_to(guild=guild)
-            synced = await self.tree.sync(guild=guild)
-            logger.info("Synced %d application command(s) to development guild %s.", len(synced), self.settings.guild_id)
+
+            try:
+                synced = await self.tree.sync(guild=guild)
+
+            except discord.Forbidden:
+                logger.exception(
+                    "Discord denied access when synchronising commands "
+                    "to guild %s. Check bot membership, application "
+                    "installation and configured guild ID.",
+                    guild.id,
+                )
+                raise
+
+            logger.info(
+                "Successfully synced %d application command(s) "
+                "to guild %s.",
+                len(synced),
+                guild.id,
+            )
             return
 
         if self.settings.sync_global_commands:
             synced = await self.tree.sync()
-            logger.info("Synced %d global application command(s).", len(synced))
+
+            logger.info(
+                "Successfully synced %d global application command(s).",
+                len(synced),
+            )
             return
 
-        logger.warning("Application commands were loaded locally but not synced. Set GUILD_ID for development, or explicitly set SYNC_GLOBAL_COMMANDS=true for global sync.")
-
+        logger.warning(
+            "Application commands were not synchronised. "
+            "Configure GUILD_ID or enable SYNC_GLOBAL_COMMANDS."
+        )
     async def on_ready(self) -> None:
         """Log the first successful gateway connection."""
         if not self._logged_first_ready:
