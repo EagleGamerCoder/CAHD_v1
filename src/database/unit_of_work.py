@@ -6,7 +6,7 @@ from types import TracebackType
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from src.database import Database
-from database.repositories import VerificationRepository
+from src.database.repositories import VerificationRepository
 
 class UnitOfWork:
     """Share one database transaction across related repository operations.
