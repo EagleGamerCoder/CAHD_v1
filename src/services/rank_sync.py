@@ -200,17 +200,6 @@ class RankSyncService:
                     entry.get("abbreviation") or rank_name
                 )
 
-                # BOD nickname overrides use Roblox user IDs.
-                is_bod = abbreviation.upper() == "BOD"
-
-                if is_bod:
-                    if (account.roblox_user_id == self.bod_second_in_command_user_id and self.bod_second_in_command_user_id):
-                        abbreviation = "1IC"
-                    elif (account.roblox_user_id == self.bod_cds_user_id and self.bod_cds_user_id):
-                        abbreviation = "2IC"
-                    elif (account.roblox_user_id == self.bod_dev_user_id and self.bod_dev_user_id):
-                        abbreviation = "DEV"
-
                 display_rank = str(entry.get("name") or rank_name)
 
                 result_text = (
