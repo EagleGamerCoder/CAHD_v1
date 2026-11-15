@@ -21,11 +21,8 @@ class Database:
 
     def __init__(self, url: str, *, echo: bool = False) -> None:
         self.url = url
-        self.engine: AsyncEngine = create_async_engine(
-            url,
-            echo=echo,
-            pool_pre_ping=True,
-        )
+        self.engine: AsyncEngine = create_async_engine(url, echo=echo, pool_pre_ping=True)
+
         if url.startswith("sqlite+aiosqlite://"):
             @event.listens_for(self.engine.sync_engine, "connect")
             def _enable_sqlite_foreign_keys(dbapi_connection, _connection_record) -> None:
@@ -35,12 +32,7 @@ class Database:
                 finally:
                     cursor.close()
 
-        self.session_factory = async_sessionmaker(
-            bind=self.engine,
-            class_=AsyncSession,
-            expire_on_commit=False,
-            autoflush=False,
-        )
+        self.session_factory = async_sessionmaker(bind=self.engine, class_=AsyncSession, expire_on_commit=False, autoflush=False)
         self._disposed = False
 
     async def check_connection(self) -> None:

@@ -26,8 +26,8 @@ def _utcnow_naive() -> datetime:
     return datetime.now(timezone.utc).replace(tzinfo=None)
 
 # Explicit allowlist: everything after "leadership" in the supplied role map is intentionally ignored by verification and rank synchronisation.
-ALWAYS_ASSIGN_KEYS = ("verified", "banner1", "banner2", "banner3", "banner4")
-MANAGED_RANK_KEYS = ("civilian", "recruit", "enlisted", "officer", "officer_perms", "genstaff", "cos", "leadership")
+ALWAYS_ASSIGN_KEYS = ("verified")
+MANAGED_RANK_KEYS = ("c_gov","afc","gen_off","sen_off","jun_off","com_off","nco","enlisted","recruit","civilian")
 MANAGED_ROLE_KEYS = set(ALWAYS_ASSIGN_KEYS) | set(MANAGED_RANK_KEYS)
 
 class RankSyncService:
@@ -73,9 +73,7 @@ class RankSyncService:
         if add:
             await member.add_roles(*add, reason="PBAC British Army verification/rank synchronisation")
 
-    async def sync_member(
-        self, member: discord.Member, *, update_record: bool = True
-    ) -> tuple[bool, str]:
+    async def sync_member(self, member: discord.Member, *, update_record: bool = True) -> tuple[bool, str]:
         async with self.database.session() as session:
             repo = VerificationRepository(session)
             account = await repo.get_by_discord_id(member.id)

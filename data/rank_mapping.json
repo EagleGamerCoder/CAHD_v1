@@ -1,0 +1,212 @@
+{
+    "_instructions": "Configure Discord role IDs only in 'roles'. BOD nickname prefixes are selected by Roblox user ID from .env.",
+    
+    "roles": {
+        "op": 1568485802097250346,
+        "cahd": 1570830894908964978,
+        "a_u": 1568494752658227231,
+
+        "c_gov": 1568446961093189652,
+        "afc": 1568446377338470570,
+
+        "l_admin": 1568448235054432316,
+        "admin": 1568448086273953904,
+        "mod": 1568447952798875723,
+        "dev": 1571502358171488377,
+
+        "gen_off": 1568447610421776424,
+        "sen_off": 1570852542647242782,
+        "jun_off": 1570852816346685440,
+        "com_off": 1568447438627541092,
+        "nco": 1571502820702552235,
+
+        "game_test": 1570274459208785980,
+
+        "enlisted": 1568447057520365641,
+        "recruit": 1571502999145029642,
+        "civilian": 1571164499849904208,
+        
+        "verified": 1568447810410516540,
+        "aest": 1571151599529627761,
+        "gmt": 1570273478026854420,
+        "est": 1571151570727473202
+
+    },
+    
+    "ranks": {
+        "12884901889": {
+            "name": "Recruit",
+            "abbreviation": "OR-1",
+            "role_keys": [
+                "recruit",
+                "enlisted"
+            ]
+        },
+        "915988074": {
+            "name": "Private",
+            "abbreviation": "OR-2",
+            "role_keys": [
+                "enlisted"
+            ]
+        },
+        "916680069": {
+            "name": "Corporal",
+            "abbreviation": "OR-4",
+            "role_keys": [
+                "enlisted"
+            ]
+        },
+        "916476060": {
+            "name": "Master Corporal",
+            "abbreviation": "OR-5",
+            "role_keys": [
+                "enlisted"
+            ]
+        },
+        "916470084": {
+            "name": "Sergeant",
+            "abbreviation": "OR-6",
+            "role_keys": [
+                "enlisted"
+            ]
+        },
+        "916782056": {
+            "name": "Warrant Officer",
+            "abbreviation": "OR-7",
+            "role_keys": [
+                "enlisted",
+                "nco"
+            ]
+        },
+        "916640056": {
+            "name": "Master Warrant Officer",
+            "abbreviation": "OR-8",
+            "role_keys": [
+                "enlisted",
+                "nco"
+            ]
+        },
+        "916476061": {
+            "name": "Chief Warrant Officer",
+            "abbreviation": "OR-9",
+            "role_keys": [
+                "enlisted",
+                "nco"
+            ]
+        },
+        "916124058": {
+            "name": "Officer Cadet",
+            "abbreviation": "OF-0",
+            "role_keys": [
+                "enlisted"
+            ]
+        },
+        "917818044": {
+            "name": "Lieutenant",
+            "abbreviation": "OF-1",
+            "role_keys": [
+                "com_off",
+                "jun_off"
+            ]
+        },
+        "915838064": {
+            "name": "Captain",
+            "abbreviation": "OF-2",
+            "role_keys": [
+                "com_off",
+                "jun_off"
+            ]
+        },
+        "916788069": {
+            "name": "Major",
+            "abbreviation": "OF-3",
+            "role_keys": [
+                "com_off",
+                "jun_off"
+            ]
+        },
+        "916164102": {
+            "name": "Lieutenant Colonel",
+            "abbreviation": "OF-4",
+            "role_keys": [
+                "com_off",
+                "sen_off"
+            ]
+        },
+        "917814058": {
+            "name": "Colonel",
+            "abbreviation": "OF-5",
+            "role_keys": [
+                "com_off",
+                "sen_off"
+            ]
+        },
+        "917804065": {
+            "name": "Brigadier General",
+            "abbreviation": "OF-6",
+            "role_keys": [
+                "com_off",
+                "sen_off"
+            ]
+        },
+        "916370070": {
+            "name": "Major General",
+            "abbreviation": "OF-7",
+            "role_keys": [
+                "com_off",
+                "gen_off"
+            ]
+        },
+
+        "916508052": {
+            "name": "NAME",
+            "abbreviation": "OR-2",
+            "role_keys": [
+                "enlisted"
+            ]
+        },
+        "917570067": {
+            "name": "NAME",
+            "abbreviation": "OR-2",
+            "role_keys": [
+                "enlisted"
+            ]
+        },
+        
+        "916176059": {
+            "name": "Canadian Army Sergeant Major",
+            "abbreviation": "CASM/DEV",
+            "role_keys": [
+                "enlisted"
+            ]
+        },
+        "ROBLOX_ID": {
+            "name": "NAME",
+            "abbreviation": "OR-2",
+            "role_keys": [
+                "enlisted"
+            ]
+        },
+        "ROBLOX_ID": {
+            "name": "NAME",
+            "abbreviation": "OR-2",
+            "role_keys": [
+                "enlisted"
+            ]
+        },
+        "ROBLOX_ID": {
+            "name": "NAME",
+            "abbreviation": "OR-2",
+            "role_keys": [
+                "enlisted"
+            ]
+        },
+        "ROBLOX_ID": {
+            "name": "NAME",
+            "abbreviation": "OR-2",
+            "role_keys": [
+                "enlisted"
+            ]
+        }
+    }
+}

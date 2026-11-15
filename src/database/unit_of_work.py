@@ -1,24 +1,12 @@
-"""Unit-of-work transaction boundary for repositories sharing one session.
-
-UNFINISHED"""
+"""Unit-of-work transaction boundary for repositories sharing one session."""
 
 from __future__ import annotations
 
 from types import TracebackType
-
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
-from src.database.connection import Database
-"""
-from src.database.repositories.personnel_repository import PersonnelRepository
-from src.database.repositories.promotion_repository import PromotionRepository
-from src.database.repositories.shift_repository import ShiftRepository
-from src.database.repositories.user_repository import UserRepository
-"""
-from database.repositories.verification_repository import (
-    VerificationRepository,
-)
-
+from src.database import Database
+from database.repositories import VerificationRepository
 
 class UnitOfWork:
     """Share one database transaction across related repository operations.
@@ -38,20 +26,12 @@ class UnitOfWork:
     def __init__(self, database: Database) -> None:
         self._session_factory: async_sessionmaker[AsyncSession] = database.session_factory
         self.session: AsyncSession | None = None
-        #self.users: UserRepository
         self.verification_sessions: VerificationRepository
-        #self.personnel: PersonnelRepository
-        #self.promotions: PromotionRepository
-        #self.shifts: ShiftRepository
         self._committed = False
 
     async def __aenter__(self) -> UnitOfWork:
         self.session = self._session_factory()
-        #self.users = UserRepository(self.session)
         self.verification_sessions = VerificationRepository(self.session)
-        #self.personnel = PersonnelRepository(self.session)
-        #self.promotions = PromotionRepository(self.session)
-        #self.shifts = ShiftRepository(self.session)
         self._committed = False
         return self
 
