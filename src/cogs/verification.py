@@ -6,13 +6,15 @@ import logging
 import discord
 from discord import app_commands
 from discord.ext import commands, tasks
+from typing import TYPE_CHECKING
 
 from src.services.roblox import RobloxAPIError
 from src.services.verification import VerificationError
 from src.ui.embeds import create_pbac_embed, create_verification_panel
 
 logger = logging.getLogger(__name__)
-
+if TYPE_CHECKING:
+    from src.core.bot import DiscordBot
 
 class RobloxUsernameModal(discord.ui.Modal, title="Link your Roblox account"):
     username = discord.ui.TextInput(
@@ -133,7 +135,7 @@ class ConfirmVerificationView(discord.ui.View):
 
 
 class Verification(commands.Cog):
-    def __init__(self, bot: commands.Bot) -> None:
+    def __init__(self, bot: DiscordBot) -> None:
         self.bot = bot
         self.verification_service = bot.verification_service
         self.rank_sync = bot.rank_sync
@@ -229,5 +231,5 @@ class Verification(commands.Cog):
         await self.bot.wait_until_ready()
 
 
-async def setup(bot: commands.Bot) -> None:
+async def setup(bot: DiscordBot) -> None:
     await bot.add_cog(Verification(bot))

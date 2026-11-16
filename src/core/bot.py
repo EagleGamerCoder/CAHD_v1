@@ -5,8 +5,8 @@ Loads cogs and syncs slash commands."""
 from __future__ import annotations
 
 import logging
-logger = logging.getLogger(__name__)
 from src.core import __version__
+from typing import TYPE_CHECKING, cast
 
 import discord
 from discord.ext import commands
@@ -21,16 +21,20 @@ from src.database.models import server_setup_model as _server_setup_model  # Reg
 from src.services.roblox import RobloxService
 from src.services.verification import VerificationService
 from src.services.rank_sync import RankSyncService
-#from src.services.setup_service import SetupService
+from src.services.setup_service import SetupService
+
+logger = logging.getLogger(__name__)
+if TYPE_CHECKING:
+    from src.cogs.bot_status import BotStatus
 
 # Add new  cogs here as they are tested and implimented.
 INITIAL_EXTENSIONS: tuple[str, ...] = (
     "src.cogs.utilities",
     "src.cogs.verification",
     "src.cogs.message",
-    #"src.cogs.ticket",
-    #"src.cogs.server_setup",
-    #"src.cogs.bot_status",
+    "src.cogs.ticket",
+    "src.cogs.server_setup",
+    "src.cogs.bot_status",
 )
 
 """MAIN BOT CLASS"""
@@ -64,16 +68,12 @@ class DiscordBot(commands.Bot):
             self.database,
             self.roblox,
             project_root=settings.project_root,
-            nickname_format=settings.nickname_format,
-            bod_field_marshal_user_id=settings.bod_field_marshal_user_id,
-            bod_second_in_command_user_id=settings.bod_second_in_command_user_id,
-            bod_cds_user_id=settings.bod_cds_user_id,
-            bod_dev_user_id=settings.bod_dev_user_id,
+            nickname_format=settings.nickname_format
         )
-        #self.setup_service = SetupService(
-            #self.database,
-            #self.roblox
-        #)
+        self.setup_service = SetupService(
+            self.database,
+            self.roblox
+        )
         self._logged_first_ready = False
         self.tree.on_error = handle_app_command_error
 
@@ -164,11 +164,16 @@ class DiscordBot(commands.Bot):
     async def close(self) -> None:
         """Close the Discord client cleanly."""
         logger.info("Shutting down %s bot.", APP_NAME)
+
         try:
-            #status_cog = self.get_cog("BotStatus")
-            #if status_cog is not None:
-                #await status_cog.announce_shutdown()
+            status_cog = self.get_cog("BotStatus")
+
+            if status_cog is not None:
+                bot_status = cast("BotStatus", status_cog)
+                await bot_status.announce_shutdown()
+
             await super().close()
+
         finally:
             try:
                 await self.roblox.close()

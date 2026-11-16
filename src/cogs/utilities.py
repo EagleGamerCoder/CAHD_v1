@@ -20,7 +20,7 @@ class Utilities(commands.Cog):
 """
 """Basic slash commands used to verify that the bot foundation is running."""
 
-
+from typing import TYPE_CHECKING
 from datetime import datetime, timezone
 from platform import python_version
 
@@ -29,8 +29,10 @@ from discord import app_commands
 from discord.ext import commands
 
 from src.ui.embeds import create_pbac_embed
-from src.core import __version__
-from src.core.constants import APP_NAME
+from src.core import __version__, __title__
+
+if TYPE_CHECKING:
+    from src.core.bot import DiscordBot
 
 def format_uptime(started_at: datetime | None) -> str:
     """Format the bot's uptime as a readable duration."""
@@ -60,7 +62,7 @@ def format_uptime(started_at: datetime | None) -> str:
 class Utilities(commands.Cog):
     """General, non-sensitive commands available to PBA server members."""
 
-    def __init__(self, bot: commands.Bot) -> None:
+    def __init__(self, bot: DiscordBot) -> None:
         self.bot = bot
         self.started_at = discord.utils.utcnow()
 
@@ -262,6 +264,6 @@ class Utilities(commands.Cog):
             embed.set_thumbnail(url=guild.icon.url)
         await interaction.response.send_message(embed=embed, files=files, ephemeral=(not show_globally))
 
-async def setup(bot: commands.Bot) -> None:
+async def setup(bot: DiscordBot) -> None:
     """Load this cog as a discord.py extension."""
     await bot.add_cog(Utilities(bot))

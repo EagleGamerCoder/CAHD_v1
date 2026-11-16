@@ -68,10 +68,6 @@ class Settings:
     verification_max_attempts: int
     rank_sync_interval_minutes: int
     nickname_format: str
-    bod_field_marshal_user_id: int
-    bod_second_in_command_user_id: int
-    bod_cds_user_id: int
-    bod_dev_user_id: int
     bot_developer_discord_id: int
     log_directory: Path
     project_root: Path
@@ -110,13 +106,7 @@ def load_config() -> Settings:
     verification_max_attempts = parse_bounded_int("VERIFICATION_MAX_ATTEMPTS", os.getenv("VERIFICATION_MAX_ATTEMPTS"), default=5, minimum=1, maximum=10)
     rank_sync_interval_minutes = parse_bounded_int("RANK_SYNC_INTERVAL_MINUTES", os.getenv("RANK_SYNC_INTERVAL_MINUTES"), default=0, minimum=0, maximum=1440)
     nickname_format = os.getenv("NICKNAME_FORMAT", "[{rank_abbr}] {username}").strip() or "[{rank_abbr}] {username}"
-    bod_field_marshal_user_id = parse_id("BOD_FIELD_MARSHAL_USER_ID", os.getenv("BOD_FIELD_MARSHAL_USER_ID"))
-    bod_second_in_command_user_id = parse_id("BOD_SECOND_IN_COMMAND_USER_ID", os.getenv("BOD_SECOND_IN_COMMAND_USER_ID"))
-    bod_cds_user_id = parse_id("BOD_CDS_USER_ID", os.getenv("BOD_CDS_USER_ID"))
-    bod_dev_user_id = parse_id("BOD_DEV_USER_ID", os.getenv("BOD_DEV_USER_ID"))
     bot_developer_discord_id = parse_id("BOT_DEVELOPER_DISCORD_ID", os.getenv("BOT_DEVELOPER_DISCORD_ID"))
-    if bod_field_marshal_user_id and bod_field_marshal_user_id == bod_second_in_command_user_id:
-        raise ConfigurationError("BOD_FIELD_MARSHAL_USER_ID and BOD_SECOND_IN_COMMAND_USER_ID must be different Roblox user IDs.")
     if not all(token in nickname_format for token in ("{username}",)):
         raise ConfigurationError("NICKNAME_FORMAT must contain the {username} placeholder.")
     if not any(token in nickname_format for token in ("{rank}", "{rank_abbr}")):
@@ -136,10 +126,6 @@ def load_config() -> Settings:
         verification_max_attempts=verification_max_attempts,
         rank_sync_interval_minutes=rank_sync_interval_minutes,
         nickname_format=nickname_format,
-        bod_field_marshal_user_id=bod_field_marshal_user_id,
-        bod_second_in_command_user_id=bod_second_in_command_user_id,
-        bod_cds_user_id=bod_cds_user_id,
-        bod_dev_user_id=bod_dev_user_id,
         bot_developer_discord_id=bot_developer_discord_id,
         log_directory=log_directory,
         project_root=PROJECT_ROOT,

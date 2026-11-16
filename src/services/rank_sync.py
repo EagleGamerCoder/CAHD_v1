@@ -33,15 +33,11 @@ MANAGED_ROLE_KEYS = set(ALWAYS_ASSIGN_KEYS) | set(MANAGED_RANK_KEYS)
 class RankSyncService:
     """Apply verification, category roles and nickname prefixes."""
 
-    def __init__(self, database, roblox, *, project_root: Path, nickname_format: str, bod_field_marshal_user_id: int = 0, bod_second_in_command_user_id: int = 0, bod_cds_user_id: int = 0, bod_dev_user_id: int = 0) -> None:
+    def __init__(self, database, roblox, *, project_root: Path, nickname_format: str) -> None:
         self.database = database
         self.roblox = roblox
         self.mapping_path = project_root / "data" / "rank_mapping.json"
         self.nickname_format = nickname_format
-        self.bod_field_marshal_user_id = bod_field_marshal_user_id
-        self.bod_second_in_command_user_id = bod_second_in_command_user_id
-        self.bod_cds_user_id = bod_cds_user_id
-        self.bod_dev_user_id = bod_dev_user_id
 
     def load_config(self) -> dict:
         try:

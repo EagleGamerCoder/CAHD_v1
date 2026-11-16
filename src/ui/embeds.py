@@ -3,7 +3,7 @@ from pathlib import Path
 
 import discord
 
-from src.core import __version__
+from src.core import __version__, __title__
 from src.core.constants import PBAC_RED, PBAC_YELLOW, PBAC_GREY
 from src.utils.json_loader import load_json_object
 
@@ -45,11 +45,11 @@ def create_pbac_embed(*, title: str, description: str | None = None, colour: dis
     #)
     # A consistent footer on all SFD embeds.
     embed.set_footer(
-        text=f"PBA Command • v{__version__}"
+        text=f"{__title__} • v{__version__}"
     )
 
     files = [
-        discord.File(BADGE_PATH, filename="badge.png"),
+        #discord.File(BADGE_PATH, filename="badge.png"), -- Stop the file from randomly sending a badge with the embed
         #discord.File(BANNER_PATH, filename="banner.png"),
     ]
 
