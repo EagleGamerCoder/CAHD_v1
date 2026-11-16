@@ -21,8 +21,8 @@ def create_pbac_embed(*, title: str, description: str | None = None, colour: dis
     # Fail clearly if an expected graphic is missing.
     if not BADGE_PATH.is_file():
         raise FileNotFoundError(f"PBAC badge image was not found: {BADGE_PATH}")
-    if not BANNER_PATH.is_file():
-        raise FileNotFoundError(f"PBAC banner image was not found: {BANNER_PATH}")
+    #if not BANNER_PATH.is_file():
+        #raise FileNotFoundError(f"PBAC banner image was not found: {BANNER_PATH}")
 
     embed = discord.Embed(
         title=title,
@@ -40,17 +40,17 @@ def create_pbac_embed(*, title: str, description: str | None = None, colour: dis
     """
     
     # Wide image displayed beneath the embed's main content.
-    embed.set_image(
-        url="attachment://banner.png"
-    )
+    #embed.set_image(
+        #url="attachment://banner.png"
+    #)
     # A consistent footer on all SFD embeds.
     embed.set_footer(
         text=f"PBA Command • v{__version__}"
     )
 
     files = [
-        # discord.File(BADGE_PATH, filename="badge.png"),
-        discord.File(BANNER_PATH, filename="banner.png"),
+        discord.File(BADGE_PATH, filename="badge.png"),
+        #discord.File(BANNER_PATH, filename="banner.png"),
     ]
 
     return embed, files
