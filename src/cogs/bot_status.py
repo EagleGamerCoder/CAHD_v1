@@ -1,12 +1,14 @@
-
 """Independant Bot status monitoring and maintenance management."""
 
 from __future__ import annotations
 
+import os
+import logging
+from pathlib import Path
 import asyncio
 import json
-
 from datetime import datetime, timezone
+from dotenv import load_dotenv
 from typing import TYPE_CHECKING
 
 import discord
@@ -14,12 +16,6 @@ from discord import app_commands
 from discord.ext import commands
 
 from src.core import __version__, __title__
-
-import os
-import logging
-from pathlib import Path
-
-from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +35,7 @@ STATUS_CHANNEL_ID = int(os.getenv("BOT_STATUS_CHANNEL_ID", "0"))
 logger.info("Loading environment from: %s", ENV_PATH)
 logger.info("Status channel configured: %s", STATUS_CHANNEL_ID != 0)
 
-DISCONNECT_GRACE_PERIOD = 45
+DISCONNECT_GRACE_PERIOD = 15
 
 
 class BotStatus(commands.Cog):
@@ -50,7 +46,6 @@ class BotStatus(commands.Cog):
 
         self.maintenance_enabled = False
         self.last_status = "unknown"
-
         self.disconnect_task: asyncio.Task | None = None
         self.startup_handled = False
 
@@ -64,14 +59,8 @@ class BotStatus(commands.Cog):
                 with STATUS_PATH.open("r", encoding="utf-8") as file:
                     data = json.load(file)
 
-                self.maintenance_enabled = data.get(
-                    "maintenance", False
-                )
-
-                self.last_status = data.get(
-                    "last_status", "unknown"
-                )
-
+                self.maintenance_enabled = data.get("maintenance", False)
+                self.last_status = data.get("last_status", "unknown")
         except (OSError, json.JSONDecodeError) as exc:
             logger.error("Could not load bot status state: %s", exc)
 
@@ -86,15 +75,10 @@ class BotStatus(commands.Cog):
         }
 
         temporary_path = STATUS_PATH.with_suffix(".tmp")
-
-        temporary_path.write_text(
-            json.dumps(data, indent=4),
-            encoding="utf-8",
-        )
-
+        temporary_path.write_text(json.dumps(data, indent=4), encoding="utf-8")
         temporary_path.replace(STATUS_PATH)
 
-    async def _send_status(self, title: str, description: str, colour: int) -> bool:
+    async def _send_status(self, title: str, description: str, colour: discord.Colour) -> bool:
         """Send a status announcement."""
 
         if STATUS_CHANNEL_ID == 0:
@@ -105,27 +89,20 @@ class BotStatus(commands.Cog):
             channel = self.bot.get_channel(STATUS_CHANNEL_ID)
 
             if channel is None:
-                channel = await self.bot.fetch_channel(
-                    STATUS_CHANNEL_ID
-                )
+                channel = await self.bot.fetch_channel(STATUS_CHANNEL_ID)
 
-            embed = discord.Embed(
-                title=title,
-                description=description,
-                colour=colour,
-                timestamp=discord.utils.utcnow(),
-            )
+            # Ensure the channel supports sending messages.
+            if not isinstance(channel, discord.abc.Messageable):
+                logger.error("Configured status channel %s is not messageable.", STATUS_CHANNEL_ID)
+                return False
 
-            embed.set_footer(
-                text=f"{__title__} • v{__version__}"
-            )
+            embed = discord.Embed(title=title, description=description, colour=colour, timestamp=discord.utils.utcnow())
+            embed.set_footer(text=f"{__title__} • v{__version__}")
 
             await channel.send(embed=embed)
-
             return True
-
-        except (discord.HTTPException, discord.Forbidden) as exc:
-            logger.error("Failed to send status message: %s", exc)
+        except discord.HTTPException:
+            logger.exception("Failed to send status message.")
             return False
 
     async def _announce_online(self) -> None:
@@ -134,15 +111,7 @@ class BotStatus(commands.Cog):
         if self.maintenance_enabled:
             return
 
-        sent = await self._send_status(
-            title="System Operational",
-            description=(
-                "🟢 **PBAC Command is online.**\n\n"
-                "The bot has successfully connected to Discord "
-                "and all systems are available."
-            ),
-            colour=discord.Colour.green(),
-        )
+        sent = await self._send_status(title="System Operational", description="🟢 **Canadian Army Home Command is online.**\n\nThe bot has successfully connected to Discord.\nAll systems are available.", colour=discord.Colour.green())
 
         if sent:
             self.last_status = "online"
@@ -154,15 +123,7 @@ class BotStatus(commands.Cog):
         if self.maintenance_enabled:
             return
 
-        sent = await self._send_status(
-            title="System Offline",
-            description=(
-                "🔴 **PBAC Command has disconnected.**\n\n"
-                "The bot is currently unavailable. "
-                "The system will announce when connectivity is restored."
-            ),
-            colour=discord.Colour.red(),
-        )
+        sent = await self._send_status(title="System Offline", description="🔴 **Canadian Army Home Command has disconnected.**\n\nThe bot is currently unavailable.\nThe system will announce when connectivity is restored.)", colour=discord.Colour.red())
 
         if sent:
             self.last_status = "offline"
@@ -288,7 +249,7 @@ class BotStatus(commands.Cog):
             sent = await self._send_status(
                 title="Maintenance Mode Enabled",
                 description=(
-                    "🛠️ **PBAC Command is now in maintenance mode.**\n\n"
+                    "🛠️ **Canadian Army Home Command Command is now in maintenance mode.**\n\n"
                     "The bot may temporarily disconnect or restart "
                     "during maintenance.\n\n"
                     "Online and offline notifications are now disabled "
@@ -323,7 +284,7 @@ class BotStatus(commands.Cog):
             sent = await self._send_status(
                 title="Maintenance Completed",
                 description=(
-                    "🟢 **PBAC Command maintenance has ended.**\n\n"
+                    "🟢 **Canadian Army Home Command Command maintenance has ended.**\n\n"
                     "The bot is returning to normal operation.\n\n"
                     "Online and offline monitoring has been re-enabled."
                 ),
@@ -348,7 +309,7 @@ class BotStatus(commands.Cog):
         await self._send_status(
             title="System Offline",
             description=(
-                "🔴 **PBAC Command is shutting down.**\n\n"
+                "🔴 **Canadian Army Home Command Command is shutting down.**\n\n"
                 "The bot is disconnecting and will be unavailable "
                 "until it starts again."
             ),

@@ -1,0 +1,94 @@
+2026-11-17 17:04:15 | WARNING  | discord.client | PyNaCl is not installed, voice will NOT be supported
+2026-11-17 17:04:15 | WARNING  | discord.client | davey is not installed, voice will NOT be supported
+2026-11-17 17:04:15 | INFO     | discord.client | logging in using static token
+2026-11-17 17:04:16 | INFO     | src.database.connection | Database connection check succeeded.
+2026-11-17 17:04:16 | INFO     | src.core.bot | Database connectivity verified.
+2026-11-17 17:04:16 | INFO     | src.core.bot | Loading 6 Discord extension(s).
+2026-11-17 17:04:16 | INFO     | src.core.bot | Loaded extension: src.cogs.utilities
+2026-11-17 17:04:16 | INFO     | src.core.bot | Loaded extension: src.cogs.verification
+2026-11-17 17:04:16 | INFO     | src.core.bot | Loaded extension: src.cogs.message
+2026-11-17 17:04:16 | INFO     | src.core.bot | Loaded extension: src.cogs.ticket
+2026-11-17 17:04:16 | INFO     | src.core.bot | Loaded extension: src.cogs.server_setup
+2026-11-17 17:04:16 | INFO     | src.cogs.bot_status | Loading environment from: C:\Users\nated\CAHD_v1\.env
+2026-11-17 17:04:16 | INFO     | src.cogs.bot_status | Status channel configured: True
+2026-11-17 17:04:16 | INFO     | src.core.bot | Loaded extension: src.cogs.bot_status
+2026-11-17 17:04:16 | INFO     | src.core.bot | Application ID: 1570509416191627334
+2026-11-17 17:04:16 | INFO     | src.core.bot | Synchronising commands to guild ID: 1568446165618528316
+2026-11-17 17:04:16 | INFO     | src.core.bot | Successfully synced 9 application command(s) to guild 1568446165618528316.
+2026-11-17 17:04:18 | INFO     | discord.gateway | Shard ID None has connected to Gateway (Session ID: 5704a2e39a4863197bd30797f99ac855).
+2026-11-17 17:04:20 | INFO     | src.core.bot | Connected to Discord as Canadian Army Home Command#3002 (user_id=1570509416191627334).
+2026-11-17 17:14:11 | INFO     | httpx | HTTP Request: GET https://groups.roblox.com/v1/groups/118297174 "HTTP/1.1 200 OK"
+2026-11-17 17:14:15 | ERROR    | src.cogs.server_setup | Unexpected setup failure for guild_id=1568446165618528316
+Traceback (most recent call last):
+  File "C:\Users\nated\CAHD_v1\src\utils\json_loader.py", line 15, in load_json_object
+    with path.open("r", encoding="utf-8") as file:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nated\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py", line 771, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\nated\\CAHD_v1\\data\\panels\\verification.json'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\nated\CAHD_v1\src\cogs\server_setup.py", line 88, in on_submit
+    await self.cog.bot.setup_service.start(
+    ...<8 lines>...
+    )
+  File "C:\Users\nated\CAHD_v1\src\services\setup_service.py", line 46, in start
+    await self.update(interaction, guild_id)
+  File "C:\Users\nated\CAHD_v1\src\services\setup_service.py", line 72, in update
+    v_embed, v_files = create_verification_panel()
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\nated\CAHD_v1\src\ui\embeds.py", line 61, in create_verification_panel
+    panel = load_json_object(panel_path)
+  File "C:\Users\nated\CAHD_v1\src\utils\json_loader.py", line 18, in load_json_object
+    raise JSONConfigurationError(f"JSON configuration file was not found: {path}") from exc
+src.utils.exceptions.JSONConfigurationError: JSON configuration file was not found: C:\Users\nated\CAHD_v1\data\panels\verification.json
+2026-11-17 17:19:01 | WARNING  | discord.client | PyNaCl is not installed, voice will NOT be supported
+2026-11-17 17:19:01 | WARNING  | discord.client | davey is not installed, voice will NOT be supported
+2026-11-17 17:19:02 | INFO     | discord.client | logging in using static token
+2026-11-17 17:19:02 | INFO     | src.database.connection | Database connection check succeeded.
+2026-11-17 17:19:02 | INFO     | src.core.bot | Database connectivity verified.
+2026-11-17 17:19:02 | INFO     | src.core.bot | Loading 6 Discord extension(s).
+2026-11-17 17:19:02 | INFO     | src.core.bot | Loaded extension: src.cogs.utilities
+2026-11-17 17:19:02 | INFO     | src.core.bot | Loaded extension: src.cogs.verification
+2026-11-17 17:19:02 | INFO     | src.core.bot | Loaded extension: src.cogs.message
+2026-11-17 17:19:02 | INFO     | src.core.bot | Loaded extension: src.cogs.ticket
+2026-11-17 17:19:02 | INFO     | src.core.bot | Loaded extension: src.cogs.server_setup
+2026-11-17 17:19:02 | INFO     | src.cogs.bot_status | Loading environment from: C:\Users\nated\CAHD_v1\.env
+2026-11-17 17:19:02 | INFO     | src.cogs.bot_status | Status channel configured: True
+2026-11-17 17:19:02 | INFO     | src.core.bot | Loaded extension: src.cogs.bot_status
+2026-11-17 17:19:02 | INFO     | src.core.bot | Application ID: 1570509416191627334
+2026-11-17 17:19:02 | INFO     | src.core.bot | Synchronising commands to guild ID: 1568446165618528316
+2026-11-17 17:19:03 | INFO     | src.core.bot | Successfully synced 9 application command(s) to guild 1568446165618528316.
+2026-11-17 17:19:03 | INFO     | discord.gateway | Shard ID None has connected to Gateway (Session ID: b62d68d7f98709e8735bef67791a67d8).
+2026-11-17 17:19:05 | INFO     | src.core.bot | Connected to Discord as Canadian Army Home Command#3002 (user_id=1570509416191627334).
+2026-11-17 17:19:42 | INFO     | httpx | HTTP Request: GET https://groups.roblox.com/v1/groups/118297174 "HTTP/1.1 200 OK"
+2026-11-17 17:21:55 | WARNING  | discord.client | PyNaCl is not installed, voice will NOT be supported
+2026-11-17 17:21:55 | WARNING  | discord.client | davey is not installed, voice will NOT be supported
+2026-11-17 17:21:55 | INFO     | discord.client | logging in using static token
+2026-11-17 17:21:56 | INFO     | src.database.connection | Database connection check succeeded.
+2026-11-17 17:21:56 | INFO     | src.core.bot | Database connectivity verified.
+2026-11-17 17:21:56 | INFO     | src.core.bot | Loading 6 Discord extension(s).
+2026-11-17 17:21:56 | INFO     | src.core.bot | Loaded extension: src.cogs.utilities
+2026-11-17 17:21:56 | INFO     | src.core.bot | Loaded extension: src.cogs.verification
+2026-11-17 17:21:56 | INFO     | src.core.bot | Loaded extension: src.cogs.message
+2026-11-17 17:21:56 | INFO     | src.core.bot | Loaded extension: src.cogs.ticket
+2026-11-17 17:21:56 | INFO     | src.core.bot | Loaded extension: src.cogs.server_setup
+2026-11-17 17:21:56 | INFO     | src.cogs.bot_status | Loading environment from: C:\Users\nated\CAHD_v1\.env
+2026-11-17 17:21:56 | INFO     | src.cogs.bot_status | Status channel configured: True
+2026-11-17 17:21:56 | INFO     | src.core.bot | Loaded extension: src.cogs.bot_status
+2026-11-17 17:21:56 | INFO     | src.core.bot | Application ID: 1570509416191627334
+2026-11-17 17:21:56 | INFO     | src.core.bot | Synchronising commands to guild ID: 1568446165618528316
+2026-11-17 17:21:56 | INFO     | src.core.bot | Successfully synced 9 application command(s) to guild 1568446165618528316.
+2026-11-17 17:21:57 | INFO     | discord.gateway | Shard ID None has connected to Gateway (Session ID: 6d7ac4c92cd30d67fc091ebcb134e2ea).
+2026-11-17 17:21:59 | INFO     | src.core.bot | Connected to Discord as Canadian Army Home Command#3002 (user_id=1570509416191627334).
+2026-11-17 17:22:56 | INFO     | httpx | HTTP Request: GET https://groups.roblox.com/v1/groups/118297174 "HTTP/1.1 200 OK"
+2026-11-17 17:34:22 | INFO     | httpx | HTTP Request: POST https://users.roblox.com/v1/usernames/users "HTTP/1.1 200 OK"
+2026-11-17 17:34:22 | INFO     | httpx | HTTP Request: GET https://users.roblox.com/v1/users/1525501316 "HTTP/1.1 200 OK"
+2026-11-17 18:23:23 | WARNING  | src.core.bot | Disconnected from the Discord gateway: waiting for reconnection.
+2026-11-17 18:23:25 | INFO     | discord.gateway | Shard ID None session has been invalidated.
+2026-11-17 18:23:25 | WARNING  | src.core.bot | Disconnected from the Discord gateway: waiting for reconnection.
+2026-11-17 18:23:31 | INFO     | discord.gateway | Shard ID None has connected to Gateway (Session ID: bfc1aec80b85c4b6ab03ad4d11adb9f7).
+2026-11-17 18:23:33 | INFO     | src.core.bot | Discord gateway session is ready again.

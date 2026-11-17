@@ -4,7 +4,7 @@ from pathlib import Path
 import discord
 
 from src.core import __version__, __title__
-from src.core.constants import PBAC_RED, PBAC_YELLOW, PBAC_GREY
+from src.core.constants import PBAC_RED, PBAC_YELLOW, CAHC_GREY
 from src.utils.json_loader import load_json_object
 
 # Project root:
@@ -15,7 +15,7 @@ BADGE_PATH = BRANDING_DIR / "badge.png"
 BANNER_PATH = BRANDING_DIR / "banner.png"
 
 
-def create_pbac_embed(*, title: str, description: str | None = None, colour: discord.Colour | None = None) -> tuple[discord.Embed, list[discord.File]]:
+def create_cahc_embed(*, title: str, description: str | None = None, colour: discord.Colour | None = None) -> tuple[discord.Embed, list[discord.File]]:
     """Create a consistently branded PBAC embed and its image attachments."""
 
     # Fail clearly if an expected graphic is missing.
@@ -27,7 +27,7 @@ def create_pbac_embed(*, title: str, description: str | None = None, colour: dis
     embed = discord.Embed(
         title=title,
         description=description,
-        colour=colour or discord.Colour(PBAC_GREY),
+        colour=colour or discord.Colour(CAHC_GREY),
         timestamp=discord.utils.utcnow()
     )
 
@@ -57,7 +57,7 @@ def create_pbac_embed(*, title: str, description: str | None = None, colour: dis
 
 def create_verification_panel() -> tuple[discord.Embed, list[discord.File]]:
     """Build the public PBAC account-verification panel from its JSON definition."""
-    panel_path = PROJECT_ROOT / "data" / "panels" / "verification.json"
+    panel_path = PROJECT_ROOT / "data" / "verification_panel.json"
     panel = load_json_object(panel_path)
 
     title = str(panel.get("title", "Roblox Account Verification"))
@@ -67,10 +67,10 @@ def create_verification_panel() -> tuple[discord.Embed, list[discord.File]]:
             "Link your Roblox account to access the appropriate PBAC Discord channels.",
         )
     )
-    embed, files = create_pbac_embed(
+    embed, files = create_cahc_embed(
         title=title,
         description=description,
-        colour=discord.Colour(PBAC_GREY)
+        colour=discord.Colour(CAHC_GREY)
     )
 
     instructions = panel.get("instructions", [])
@@ -89,7 +89,7 @@ def create_verification_panel() -> tuple[discord.Embed, list[discord.File]]:
 
 def create_rules_panel() -> tuple[discord.Embed, list[discord.File]]:
     """Build the public PBAC rules panel from its JSON definition."""
-    panel_path = PROJECT_ROOT / "data" / "panels" / "rules.json"
+    panel_path = PROJECT_ROOT / "data" / "rules_panel.json"
     panel = load_json_object(panel_path)
 
     title = str(panel.get("title", "~title~"))
@@ -99,10 +99,10 @@ def create_rules_panel() -> tuple[discord.Embed, list[discord.File]]:
             "~description~",
         )
     )
-    embed, files = create_pbac_embed(
+    embed, files = create_cahc_embed(
         title=title,
         description=description,
-        colour=discord.Colour(PBAC_GREY)
+        colour=discord.Colour(CAHC_GREY)
     )
 
     support = panel.get("support")
@@ -127,10 +127,10 @@ def create_tickets_panel() -> tuple[discord.Embed, list[discord.File]]:
             "~description~",
         )
     )
-    embed, files = create_pbac_embed(
+    embed, files = create_cahc_embed(
         title=title,
         description=description,
-        colour=discord.Colour(PBAC_GREY)
+        colour=discord.Colour(CAHC_GREY)
     )
 
     return embed, files

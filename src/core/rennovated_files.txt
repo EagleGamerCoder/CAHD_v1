@@ -1,0 +1,16 @@
+>>>
+
+
+
+>>>
+
+Lead Admin = Kick(If approved), handle tickets, timeout, mute, deafen
+
+Admin = Same as lead admin but not able to kick
+
+Mod = Handle tickets, timeout and mute
+would be easier if it was the same moderation structure as PBA
+
+rblx group: 118297174
+ver 1568451235407724715
+rule 1568450515858358272

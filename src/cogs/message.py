@@ -6,7 +6,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from src.ui.embeds import create_pbac_embed
+from src.ui.embeds import create_cahc_embed
 
 class Message(commands.Cog):
     """General bot message commands for bot_developer_discord_id only."""
@@ -30,11 +30,11 @@ class Message(commands.Cog):
         
         user_id = interaction.user.id
         if user_id != self.bot.settings.bot_developer_discord_id:
-            embed, files = create_pbac_embed(title="Sorry, You can't use this command!", description=f"Yeah you're not eagle buddy, you could never outmatch his aura {interaction.user.mention}.")
+            embed, files = create_cahc_embed(title="Sorry, You can't use this command!", description=f"Yeah you're not eagle buddy, you could never outmatch his aura {interaction.user.mention}.")
             await channel.send(embed=embed, files=files)
             return
         
-        embed, files = create_pbac_embed(title=title or "", description=message)
+        embed, files = create_cahc_embed(title=title or "", description=message)
         if ping == True and ping_user != None:
             await channel.send(ping_user.mention)
         await channel.send(embed=embed, files=files)

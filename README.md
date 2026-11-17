@@ -2,3 +2,4 @@
 
 ## Setup
 
+python -m src.core.main

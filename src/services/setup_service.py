@@ -6,7 +6,7 @@ from src.database.models.server_setup_model import ServerConfiguration
 from src.database.repositories.server_setup_repository import ServerSetupRepository
 from src.services.roblox import RobloxService
 from src.cogs.verification import StartVerificationView
-from src.ui.embeds import create_verification_panel, create_rules_panel, create_pbac_embed
+from src.ui.embeds import create_verification_panel, create_rules_panel, create_cahc_embed
 from src.utils.json_loader import load_json_object
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -104,7 +104,7 @@ class SetupService:
                 if embed_info is None:
                     continue
 
-                embed, files = create_pbac_embed(
+                embed, files = create_cahc_embed(
                     title=embed_info.get("title", ""),
                     description=embed_info.get("description", ""),
                 )
@@ -163,7 +163,7 @@ class SetupService:
                 if embed_info is None:
                     continue
 
-                embed, files = create_pbac_embed(
+                embed, files = create_cahc_embed(
                     title=embed_info.get("title", ""),
                     description=embed_info.get("description", ""),
                 )

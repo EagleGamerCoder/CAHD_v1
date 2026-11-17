@@ -8,7 +8,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from src.ui.embeds import create_pbac_embed, create_tickets_panel
+from src.ui.embeds import create_cahc_embed, create_tickets_panel
 
 if TYPE_CHECKING:
     from src.core.bot import DiscordBot
