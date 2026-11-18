@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 
 from src.services.roblox import RobloxAPIError
 from src.services.verification import VerificationError
-from src.ui.embeds import create_pbac_embed, create_verification_panel
+from src.ui.embeds import create_cahc_embed, create_verification_panel
 
 logger = logging.getLogger(__name__)
 if TYPE_CHECKING:
@@ -40,7 +40,7 @@ class RobloxUsernameModal(discord.ui.Modal, title="Link your Roblox account"):
             await interaction.followup.send(str(exc), ephemeral=True)
             return
 
-        embed, files = create_pbac_embed(
+        embed, files = create_cahc_embed(
             title="Complete Roblox Verification",
             description=(
                 f"**Roblox account:** [{canonical_name}](https://www.roblox.com/users/{user_id}/profile)\n"
