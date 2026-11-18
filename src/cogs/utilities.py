@@ -28,7 +28,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from src.ui.embeds import create_pbac_embed
+from src.ui.embeds import create_cahc_embed
 from src.core import __version__, __title__
 
 if TYPE_CHECKING:
@@ -72,7 +72,7 @@ class Utilities(commands.Cog):
 
         latency_ms = round(self.bot.latency * 1000)
 
-        embed, files = create_pbac_embed(
+        embed, files = create_cahc_embed(
             title="PBAC Systems Status",
             description=(
                 "Pong!"
@@ -148,8 +148,8 @@ class Utilities(commands.Cog):
         extension_count = len(bot.extensions)
 
         # // Build the embed
-        embed, files = create_pbac_embed(
-            title="PBA Command | Bot Information",
+        embed, files = create_cahc_embed(
+            title="CA Home Command | Bot Information",
             description=(
                 "Runtime diagnostics and deployment statistics\nfor the Polvito's British Army Command Discord bot.\n\n"
                 f"**Current Status:** {'🟢' if bot.is_ready() else '🟡'} "
@@ -232,7 +232,7 @@ class Utilities(commands.Cog):
             )
             return
 
-        embed, files = create_pbac_embed(
+        embed, files = create_cahc_embed(
             title=guild.name,
             description=(
                 "Discord server information."
