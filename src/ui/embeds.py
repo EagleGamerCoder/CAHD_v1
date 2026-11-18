@@ -4,7 +4,7 @@ from pathlib import Path
 import discord
 
 from src.core import __version__, __title__
-from src.core.constants import PBAC_RED, PBAC_YELLOW, CAHC_GREY
+from src.core.constants import CAHC_GREY
 from src.utils.json_loader import load_json_object
 
 # Project root:
@@ -20,7 +20,7 @@ def create_cahc_embed(*, title: str, description: str | None = None, colour: dis
 
     # Fail clearly if an expected graphic is missing.
     if not BADGE_PATH.is_file():
-        raise FileNotFoundError(f"PBAC badge image was not found: {BADGE_PATH}")
+        raise FileNotFoundError(f"CAHC badge image was not found: {BADGE_PATH}")
     #if not BANNER_PATH.is_file():
         #raise FileNotFoundError(f"PBAC banner image was not found: {BANNER_PATH}")
 
