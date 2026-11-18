@@ -32,6 +32,12 @@ class Moderation(commands.Cog):
     def __init__(self, bot: DiscordBot) -> None:
         self.bot = bot
 
+        self.warning_role_ids: dict[int, int] = {
+            1: int(os.getenv("WARNING_ONE_ROLE_ID", "0")),
+            2: int(os.getenv("WARNING_TWO_ROLE_ID", "0")),
+            3: int(os.getenv("WARNING_THREE_ROLE_ID", "0")),
+        }
+
     moderation = app_commands.Group(name="moderation", description="Main-server moderation commands.")
 
     async def has_moderation_level(self, interaction: discord.Interaction, level_requirement: int) -> bool:
@@ -224,14 +230,12 @@ class Moderation(commands.Cog):
 
         await interaction.followup.send(f"Successfully timed out **{member}** for **{duration} minutes**." + ("" if logged else "\nWarning: The moderation log could not be posted."), ephemeral=True)
 
-    @moderation.command(
-        name="warn",
-        description="Issue a formal warning to a member.",
-    )
+    @moderation.command(name="warn", description="Issue a formal warning to a member.")
     @app_commands.describe(
         member="Member to warn.",
         reason="Reason for the warning.",
     )
+    @app_commands.checks.bot_has_permissions(manage_roles=True)
     async def warn(
         self,
         interaction: discord.Interaction,
@@ -245,48 +249,237 @@ class Moderation(commands.Cog):
         error = await self._validate_target(interaction, member)
 
         if error:
+            await interaction.response.send_message(error, ephemeral=True)
+            return
+
+        guild = interaction.guild
+
+        if guild is None:
+            return
+
+        warning_roles: dict[int, discord.Role] = {}
+
+        for level, role_id in self.warning_role_ids.items():
+            role = guild.get_role(role_id)
+
+            if role is None:
+                await interaction.response.send_message(
+                    f"Warning role {level} is missing or incorrectly configured.",
+                    ephemeral=True,
+                )
+                return
+
+            warning_roles[level] = role
+
+        # Determine the member's current warning level.
+        current_level = max(
+            (
+                level
+                for level, role in warning_roles.items()
+                if role in member.roles
+            ),
+            default=0,
+        )
+
+        # Prevent warnings beyond the third level.
+        if current_level >= 3:
             await interaction.response.send_message(
-                error,
+                f"**{member}** has already reached Warning 3.\n\n"
+                "Further disciplinary action should be considered by senior "
+                "administration. Review the existing moderation history before "
+                "deciding whether further action is appropriate.",
+                ephemeral=True,
+            )
+            return
+
+        next_level = current_level + 1
+        next_role = warning_roles[next_level]
+
+        # Ensure the bot can manage the warning role.
+        bot_member = guild.me
+
+        if bot_member is None or next_role >= bot_member.top_role:
+            await interaction.response.send_message(
+                "I cannot assign the warning role due to Discord role hierarchy.",
                 ephemeral=True,
             )
             return
 
         await interaction.response.defer(ephemeral=True)
 
+        try:
+            # Replace any existing warning role with the new one.
+            updated_roles = [
+                role
+                for role in member.roles
+                if role not in warning_roles.values()
+            ]
+
+            updated_roles.append(next_role)
+
+            await member.edit(
+                roles=updated_roles,
+                reason=f"Warning {next_level}/3: {reason}",
+            )
+
+        except discord.Forbidden:
+            await interaction.followup.send(
+                "I do not have permission to update this member's roles.",
+                ephemeral=True,
+            )
+            return
+
+        except discord.HTTPException:
+            await interaction.followup.send(
+                "Discord returned an error while assigning the warning role.",
+                ephemeral=True,
+            )
+            return
+
         notified = await self._notify_member(
             member,
-            "Warning",
+            f"Formal Warning ({next_level}/3)",
             reason,
         )
 
         logged = await self._log_action(
             interaction,
-            "Member Warned",
+            f"Warning {next_level}/3 Issued",
             member,
             reason,
-            discord.Colour.yellow(),
+            discord.Colour(CAHC_YELLOW),
             extra=(
-                "Direct message delivered."
-                if notified
-                else "Direct message could not be delivered."
+                f"Warning level: {next_level}/3\n"
+                f"Direct message: {'Delivered' if notified else 'Unavailable'}"
             ),
         )
 
-        await interaction.followup.send(
-            f"Successfully warned **{member}**."
-            + (
-                ""
-                if notified
-                else "\nThe member's direct messages were unavailable."
+        response = (
+            f"Successfully issued **Warning {next_level}/3** to **{member}**."
+        )
+
+        if not notified:
+            response += "\nThe member's direct messages were unavailable."
+
+        if not logged:
+            response += "\nWarning: The moderation log could not be posted."
+
+        if next_level == 3:
+            response += (
+                "\n\n**Third warning reached**\n"
+                "This member has reached the final warning level. "
+                "Review their moderation history and refer the case to senior "
+                "administration for consideration of further disciplinary action."
             )
-            + (
-                ""
-                if logged
-                else "\nWarning: The moderation log could not be posted."
-            ),
-            ephemeral=True,
+
+        await interaction.followup.send(response, ephemeral=True)
+
+    @moderation.command(name="unwarn", description="Remove all warning roles from a member.")
+    @app_commands.describe(
+        member="Member whose warnings should be removed.",
+        reason="Reason for removing the warnings.",
+    )
+    @app_commands.checks.bot_has_permissions(manage_roles=True)
+    async def unwarn(
+        self,
+        interaction: discord.Interaction,
+        member: discord.Member,
+        reason: str,
+    ) -> None:
+
+        if not await self.has_moderation_level(interaction, 10):
+            return
+
+        error = await self._validate_target(interaction, member)
+
+        if error:
+            await interaction.response.send_message(error, ephemeral=True)
+            return
+
+        guild = interaction.guild
+
+        if guild is None:
+            return
+
+        warning_roles = [
+            guild.get_role(role_id)
+            for role_id in self.warning_role_ids.values()
+            if role_id != 0
+        ]
+
+        warning_roles = [
+            role for role in warning_roles
+            if role is not None
+        ]
+
+        existing_roles = [
+            role for role in warning_roles
+            if role in member.roles
+        ]
+
+        if not existing_roles:
+            await interaction.response.send_message(
+                f"**{member}** does not have any warning roles.",
+                ephemeral=True,
+            )
+            return
+
+        await interaction.response.defer(ephemeral=True)
+
+        try:
+            updated_roles = [
+                role
+                for role in member.roles
+                if role not in warning_roles
+            ]
+
+            await member.edit(
+                roles=updated_roles,
+                reason=f"Warnings removed: {reason}",
+            )
+
+        except discord.Forbidden:
+            await interaction.followup.send(
+                "I do not have permission to remove this member's warning roles.",
+                ephemeral=True,
+            )
+            return
+
+        except discord.HTTPException:
+            await interaction.followup.send(
+                "Discord returned an error while removing the warning roles.",
+                ephemeral=True,
+            )
+            return
+
+        notified = await self._notify_member(
+            member,
+            "Warnings Removed",
+            reason,
         )
 
+        logged = await self._log_action(
+            interaction,
+            "Warnings Removed",
+            member,
+            reason,
+            discord.Colour(CAHC_YELLOW),
+            extra=(
+                f"Removed warning levels: "
+                f"{', '.join(str(self.warning_role_ids[level]) for level in self.warning_role_ids if guild.get_role(self.warning_role_ids[level]) in existing_roles)}\n"
+                f"Direct message: {'Delivered' if notified else 'Unavailable'}"
+            ),
+        )
+
+        response = f"Successfully removed all warning roles from **{member}**."
+
+        if not notified:
+            response += "\nThe member's direct messages were unavailable."
+
+        if not logged:
+            response += "\nWarning: The moderation log could not be posted."
+
+        await interaction.followup.send(response, ephemeral=True)
 
 async def setup(bot: DiscordBot) -> None:
     await bot.add_cog(Moderation(bot))
